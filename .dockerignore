@@ -1,0 +1,42 @@
+# Git
+.git
+.gitignore
+.gitattributes
+
+# Docker files (tidak perlu di-copy ke image)
+docker-compose.yml
+docker-compose*.yml
+Dockerfile
+.dockerignore
+
+# Node
+node_modules
+npm-debug.log
+
+# Laravel cache & logs (akan di-generate ulang di container)
+/bootstrap/cache/*.php
+/storage/*.key
+/storage/logs
+/storage/framework/cache
+/storage/framework/sessions
+/storage/framework/views
+
+# Environment files (gunakan env variable saat runtime)
+.env
+.env.*
+!.env.example
+
+# Testing
+/tests
+phpunit.xml
+.phpunit.result.cache
+
+# Dev tools
+.editorconfig
+.php-cs-fixer.php
+.phpstan.neon
+README.md
+
+# Build artifacts (akan di-build ulang di stage node-builder)
+/public/hot
+/public/build

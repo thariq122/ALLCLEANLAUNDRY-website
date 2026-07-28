@@ -1,0 +1,97 @@
+services:
+
+  # ─────────────────────────────────
+  # Laravel Application
+  # ─────────────────────────────────
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: allclean_app
+    restart: unless-stopped
+    ports:
+      - "8000:80"
+    environment:
+      APP_NAME: "All Clean Laundry"
+      APP_ENV: production
+      APP_KEY: ${APP_KEY}
+      APP_DEBUG: "false"
+      APP_URL: http://localhost:8000
+
+      DB_CONNECTION: mysql
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_DATABASE: ${DB_DATABASE:-allclean_db}
+      DB_USERNAME: ${DB_USERNAME:-allclean_user}
+      DB_PASSWORD: ${DB_PASSWORD:-secret}
+
+      SESSION_DRIVER: database
+      CACHE_STORE: database
+      QUEUE_CONNECTION: database
+
+      LOG_CHANNEL: stack
+      LOG_LEVEL: error
+    volumes:
+      - storage_data:/var/www/html/storage/app
+      - logs_data:/var/www/html/storage/logs
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - allclean_network
+
+  # ─────────────────────────────────
+  # MySQL Database
+  # ─────────────────────────────────
+  db:
+    image: mysql:8.0
+    container_name: allclean_db
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE:-allclean_db}
+      MYSQL_USER: ${DB_USERNAME:-allclean_user}
+      MYSQL_PASSWORD: ${DB_PASSWORD:-secret}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-rootsecret}
+    ports:
+      - "3307:3306"   # Port 3307 di host agar tidak bentrok dengan MySQL lokal XAMPP
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "--password=${DB_ROOT_PASSWORD:-rootsecret}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - allclean_network
+
+  # ─────────────────────────────────
+  # phpMyAdmin (opsional, untuk dev)
+  # ─────────────────────────────────
+  phpmyadmin:
+    image: phpmyadmin:5.2
+    container_name: allclean_phpmyadmin
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    environment:
+      PMA_HOST: db
+      PMA_PORT: 3306
+      PMA_USER: root
+      PMA_PASSWORD: ${DB_ROOT_PASSWORD:-rootsecret}
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - allclean_network
+
+volumes:
+  mysql_data:
+    driver: local
+  storage_data:
+    driver: local
+  logs_data:
+    driver: local
+
+networks:
+  allclean_network:
+    driver: bridge
