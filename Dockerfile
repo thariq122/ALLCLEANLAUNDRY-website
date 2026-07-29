@@ -1,36 +1,39 @@
-# ==================================
-# Stage 1 - Build Frontend
-# ==================================
+# ==========================================
+# Stage 1 - Build Frontend (Vite)
+# ==========================================
 FROM node:20-alpine AS node-builder
 
 WORKDIR /app
 
 COPY package*.json ./
 
-RUN if [ -f package-lock.json ]; then npm ci; else npm install; fi
+RUN if [ -f package-lock.json ]; then \
+      npm ci; \
+    else \
+      npm install; \
+    fi
 
 COPY . .
 
 RUN npm run build
-RUN pwd
-RUN ls -la
 
 
-# ==================================
-# Stage 2 - PHP
-# ==================================
+# ==========================================
+# Stage 2 - Laravel
+# ==========================================
 FROM php:8.2-fpm-alpine
 
 ENV COMPOSER_ALLOW_SUPERUSER=1
 
+# Install system packages
 RUN apk add --no-cache \
     nginx \
     supervisor \
-    git \
+    bash \
     curl \
+    git \
     unzip \
     zip \
-    bash \
     icu-dev \
     oniguruma-dev \
     libzip-dev \
@@ -38,34 +41,38 @@ RUN apk add --no-cache \
     libjpeg-turbo-dev \
     libpng-dev
 
+# Install PHP extensions
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install \
-    pdo \
-    pdo_mysql \
-    mbstring \
-    bcmath \
-    exif \
-    intl \
-    zip \
-    gd \
-    opcache
+        pdo \
+        pdo_mysql \
+        mbstring \
+        bcmath \
+        exif \
+        intl \
+        zip \
+        gd \
+        opcache
 
+# Install Composer
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
 WORKDIR /var/www/html
 
-# Copy seluruh project
+# Copy seluruh project Laravel
 COPY . .
 
-# Copy hasil build vite
+# Copy hasil build Vite
 COPY --from=node-builder /app/public/build ./public/build
 
+# Install dependency Laravel
 RUN composer install \
     --no-dev \
     --prefer-dist \
     --optimize-autoloader \
     --no-interaction
 
+# Buat folder yang dibutuhkan Laravel
 RUN mkdir -p \
     storage/framework/cache/data \
     storage/framework/sessions \
@@ -73,16 +80,30 @@ RUN mkdir -p \
     storage/logs \
     bootstrap/cache
 
-RUN chmod -R 775 storage bootstrap/cache
+# Buat file log
+RUN touch storage/logs/laravel.log
 
-RUN chown -R www-data:www-data storage bootstrap/cache
-
+# Bersihkan cache
 RUN php artisan optimize:clear || true
 
+# Permission
+RUN chown -R www-data:www-data \
+    storage \
+    bootstrap/cache
+
+RUN chmod -R 777 \
+    storage \
+    bootstrap/cache
+
+# Nginx
 COPY docker/nginx/default.conf /etc/nginx/http.d/default.conf
+
+# Supervisor
 COPY docker/supervisor/supervisord.conf /etc/supervisord.conf
+
+# PHP Opcache
 COPY docker/php/opcache.ini /usr/local/etc/php/conf.d/opcache.ini
 
 EXPOSE 80
 
-CMD ["/usr/bin/supervisord","-c","/etc/supervisord.conf"]
+CMD ["/usr/bin/supervisord", "-c", "/etc/supervisord.conf"]
