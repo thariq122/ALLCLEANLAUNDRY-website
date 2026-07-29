@@ -1,107 +1,109 @@
 # ================================
-# Stage 1: Build Assets (Node.js)
+# Stage 1: Build Frontend (Vite)
 # ================================
 FROM node:20-alpine AS node-builder
 
 WORKDIR /app
 
 COPY package*.json ./
-RUN npm ci
+
+# Gunakan npm install agar aman jika package-lock.json tidak ada
+RUN npm install
 
 COPY . .
+
 RUN npm run build
 
-# ================================
-# Stage 2: PHP Application
-# ================================
-FROM php:8.2-fpm-alpine AS app
 
-# Install system dependencies
+# ================================
+# Stage 2: PHP + Laravel
+# ================================
+FROM php:8.2-fpm-alpine
+
+# Install system packages
 RUN apk add --no-cache \
     nginx \
     supervisor \
+    git \
     curl \
-    libpng-dev \
-    libjpeg-turbo-dev \
-    freetype-dev \
-    libzip-dev \
-    oniguruma-dev \
-    icu-dev \
-    zip \
     unzip \
-    git
+    zip \
+    icu-dev \
+    oniguruma-dev \
+    libzip-dev \
+    freetype-dev \
+    libjpeg-turbo-dev \
+    libpng-dev
 
-# Install PHP extensions
+# Install PHP Extensions
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install \
         pdo \
         pdo_mysql \
         mbstring \
-        exif \
-        pcntl \
         bcmath \
-        gd \
-        zip \
+        exif \
         intl \
+        zip \
+        gd \
         opcache
 
 # Install Composer
-COPY --from=composer:2.7 /usr/bin/composer /usr/bin/composer
+COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
 WORKDIR /var/www/html
 
-# Copy composer files and install PHP dependencies
+# ================================
+# Composer
+# ================================
 COPY composer.json composer.lock ./
+
 RUN composer install \
     --no-dev \
-    --no-interaction \
-    --no-autoloader \
-    --no-scripts \
-    --prefer-dist
+    --prefer-dist \
+    --optimize-autoloader \
+    --no-interaction
 
-# Copy application source
+# ================================
+# Copy Source Code
+# ================================
 COPY . .
 
-# Copy frontend build
+# Copy hasil build Vite
 COPY --from=node-builder /app/public/build ./public/build
 
-# Install composer autoload
-RUN composer dump-autoload --optimize --no-dev
+# ================================
+# Laravel Setup
+# ================================
 
-# Create Laravel directories
+# Pastikan folder Laravel ada
 RUN mkdir -p \
-    /var/www/html/storage/framework/cache/data \
-    /var/www/html/storage/framework/sessions \
-    /var/www/html/storage/framework/views \
-    /var/www/html/storage/logs \
-    /var/www/html/bootstrap/cache
+    storage/framework/cache/data \
+    storage/framework/sessions \
+    storage/framework/views \
+    storage/logs \
+    bootstrap/cache
 
-# Permissions
-RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache \
-    && chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
+# Permission
+RUN chown -R www-data:www-data storage bootstrap/cache
 
-RUN php artisan package:discover --ansi || true
+RUN chmod -R 775 storage bootstrap/cache
 
-# Copy built frontend assets from node-builder stage
-COPY --from=node-builder /app/public/build ./public/build
+# Clear cache lama
+RUN php artisan optimize:clear || true
 
-# Generate optimized autoload files
-RUN composer dump-autoload --optimize --no-dev
+# Generate cache baru
+RUN php artisan config:cache || true
+RUN php artisan route:cache || true
+RUN php artisan view:cache || true
 
-# Set correct permissions
-RUN chown -R www-data:www-data /var/www/html \
-    && chmod -R 755 /var/www/html/storage \
-    && chmod -R 755 /var/www/html/bootstrap/cache
-
-# Copy Nginx config
+# ================================
+# Config Files
+# ================================
 COPY docker/nginx/default.conf /etc/nginx/http.d/default.conf
-
-# Copy Supervisor config
 COPY docker/supervisor/supervisord.conf /etc/supervisord.conf
-
-# PHP opcache config for production
 COPY docker/php/opcache.ini /usr/local/etc/php/conf.d/opcache.ini
 
 EXPOSE 80
 
-CMD ["/usr/bin/supervisord", "-c", "/etc/supervisord.conf"]
+CMD ["/usr/bin/supervisord","-c","/etc/supervisord.conf"]
