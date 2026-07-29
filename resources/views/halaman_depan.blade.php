@@ -149,7 +149,7 @@
         /* Smooth entrance animation from LEFT */
         @keyframes slideFromLeft {
             0% {
-                transform: translateX(-80px);
+                transform: translateX(-120px);
                 opacity: 0;
             }
             100% {
@@ -158,21 +158,21 @@
             }
         }
         .animate-slide-left {
-            animation: slideFromLeft 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            animation: slideFromLeft 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
         }
         
         /* Staggered delays */
         .animate-delay-100 {
-            animation-delay: 0.1s;
+            animation-delay: 0.15s;
         }
         .animate-delay-200 {
-            animation-delay: 0.2s;
+            animation-delay: 0.35s;
         }
         .animate-delay-300 {
-            animation-delay: 0.3s;
+            animation-delay: 0.55s;
         }
         .animate-delay-400 {
-            animation-delay: 0.4s;
+            animation-delay: 0.75s;
         }
 
         .korean-label {
