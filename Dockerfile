@@ -62,6 +62,24 @@ RUN composer install \
 # Copy application source
 COPY . .
 
+# Copy frontend build
+COPY --from=node-builder /app/public/build ./public/build
+
+# Install composer autoload
+RUN composer dump-autoload --optimize --no-dev
+
+# Create Laravel directories
+RUN mkdir -p \
+    /var/www/html/storage/framework/cache/data \
+    /var/www/html/storage/framework/sessions \
+    /var/www/html/storage/framework/views \
+    /var/www/html/storage/logs \
+    /var/www/html/bootstrap/cache
+
+# Permissions
+RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache \
+    && chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
+
 RUN php artisan package:discover --ansi || true
 
 # Copy built frontend assets from node-builder stage
