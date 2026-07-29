@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LaundryController;
 
 // Halaman Depan Utama
-Route::get('/', function () { return view('halaman_depan'); });
+Route::get('/', [LaundryController::class, 'halamanDepan']);
 
 // Jalur Cek Status Pelanggan
 Route::get('/status', [LaundryController::class, 'cekStatus']);
@@ -22,11 +22,11 @@ Route::get('/admin/hapus/{id}', [LaundryController::class, 'hapusPesanan']);
 // --- TAMBAHAN BARU: SIMPAN PESANAN ---
 Route::post('/admin/tambah-pesanan', [LaundryController::class, 'simpanPesanan']);
 
+// --- TAMBAHAN BARU: BOOKING PICKUP PELANGGAN ---
+Route::post('/pickup', [LaundryController::class, 'simpanPickup']);
+
 // --- TAMBAHAN BARU: CETAK NOTA ---
 Route::get('/admin/cetak/{id}', [LaundryController::class, 'cetakNota']);
-
-// --- FITUR PELANGGAN: CEK STATUS NOTA ---
-Route::get('/status', [LaundryController::class, 'cekStatus']);
 
 // --- TAMBAHAN BARU: CETAK REKAP LAPORAN ---
 Route::get('/admin/laporan', [LaundryController::class, 'cetakLaporan']);

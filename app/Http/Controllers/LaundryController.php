@@ -11,12 +11,18 @@ class LaundryController extends Controller
     // 1. TAMPILAN HALAMAN DEPAN
     public function halamanDepan()
     {
-        return view('halaman_depan');
+        $daftarLayanan = DB::table('layanans')->orderBy('kategori', 'asc')->get();
+
+        return view('halaman_depan', compact('daftarLayanan'));
     }
 
     // 2. PROSES CEK STATUS PESANAN UNTUK PELANGGAN
     public function cekStatus(Request $request)
     {
+        $request->validate([
+            'nota' => ['required', 'string', 'max:50'],
+        ]);
+
         $nota = $request->input('nota');
         // Join ke tabel layanans agar pelanggan tahu mereka mengambil paket apa
         $pesanan = DB::table('pesanan')
@@ -124,6 +130,43 @@ class LaundryController extends Controller
         ]);
 
         return redirect('/admin/dashboard')->with('success', $pesan_sukses);
+    }
+
+    // 6B. BOOKING PICKUP PELANGGAN DARI HALAMAN DEPAN
+    public function simpanPickup(Request $request)
+    {
+        $validated = $request->validate([
+            'nama_pelanggan' => ['required', 'string', 'max:255'],
+            'nomor_hp' => ['required', 'string', 'max:20'],
+            'layanan_id' => ['required', 'exists:layanans,id'],
+            'jumlah' => ['required', 'numeric', 'min:0.1'],
+            'alamat_pickup' => ['required', 'string', 'max:500'],
+            'tanggal_pickup' => ['required', 'date'],
+            'jam_pickup' => ['required'],
+            'catatan_tambahan' => ['nullable', 'string', 'max:500'],
+        ]);
+
+        $layanan = DB::table('layanans')->where('id', $validated['layanan_id'])->first();
+
+        if (!$layanan) {
+            return redirect()->back()->withErrors(['layanan_id' => 'Layanan laundry tidak valid!'])->withInput();
+        }
+
+        $nomor_nota = 'LND-' . rand(1000, 9999);
+        $total_harga = $validated['jumlah'] * $layanan->harga;
+
+        DB::table('pesanan')->insert([
+            'nomor_nota' => $nomor_nota,
+            'nama_pelanggan' => $validated['nama_pelanggan'],
+            'nomor_hp' => $validated['nomor_hp'],
+            'layanan_id' => $validated['layanan_id'],
+            'jumlah' => $validated['jumlah'],
+            'berat_kg' => $validated['jumlah'],
+            'total_harga' => $total_harga,
+            'status' => 'Baru',
+        ]);
+
+        return redirect('/')->with('success', 'Permintaan pickup untuk ' . $validated['nama_pelanggan'] . ' berhasil dikirim. Nota sementara: ' . $nomor_nota . '.');
     }
 
     // 7. UPDATE STATUS PROGRES LAUNDRY
