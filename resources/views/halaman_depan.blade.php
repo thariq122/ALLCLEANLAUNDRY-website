@@ -596,7 +596,7 @@
                 <div class="lg:col-span-1 space-y-lg flex flex-col justify-center reveal">
                     <div class="p-lg bg-background rounded-xl border border-border shadow-sm shimmer">
                         <h4 class="font-bold text-xl text-primary mb-sm">Outlet Cibiru</h4>
-                        <p class="text-text-secondary mb-md">Jl. Percobaan No. 123, Cibiru, Kab. Bandung, Jawa Barat</p>
+                        <p class="text-text-secondary mb-md">Jl. Raya Panyileukan Jl. Bangkit 2 No.7 Blk H3, Cipadung Kidul, Kec. Panyileukan, Kota Bandung, Jawa Barat</p>
                         <div class="flex items-center gap-sm text-sm text-text-primary mb-xs">
                             <span class="material-symbols-outlined text-primary">schedule</span>
                             <span>Buka: 07:00 - 21:00 WIB</span>
@@ -682,7 +682,7 @@
     </div>
     <div class="max-w-7xl mx-auto mt-2xl pt-lg border-t border-border flex flex-col md:flex-row justify-between items-center gap-md">
         <p class="text-on-surface-variant text-sm">© 2024 ALL CLEAN LAUNDRY. All rights reserved.</p>
-        <p class="text-on-surface-variant text-xs">Made with 💙 for your clean clothes.</p>
+        <p class="text-on-surface-variant text-xs">Made by TEKKOM.</p>
     </div>
 </footer>
 
