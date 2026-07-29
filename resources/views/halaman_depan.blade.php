@@ -303,10 +303,7 @@
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-2xl items-center">
                 <div class="relative reveal">
                     <img class="rounded-xl shadow-2xl aspect-[4/3] object-cover animate-float" data-alt="A modern laundry shop storefront with a clean and professional facade" src="{{ asset('images/ruko-laundry3.png') }}" alt="Ruko laundry All Clean" />
-                    <div class="absolute -bottom-10 -right-10 bg-primary text-white p-xl rounded-xl shadow-2xl text-center min-w-[200px] animate-float [animation-delay:0.5s]">
-                        <span class="block text-4xl font-bold">2+</span>
-                        <span class="text-sm opacity-90">Tahun Pengalaman</span>
-                    </div>
+                    <img class="absolute -bottom-10 -right-10 shadow-2xl animate-float [animation-delay:0.5s]" src="{{ asset('images/asset2.png') }}" alt="2+ Tahun Pengalaman" />
                 </div>
                 <div class="space-y-lg reveal">
                     <span class="korean-label">TENTANG KAMI</span>
