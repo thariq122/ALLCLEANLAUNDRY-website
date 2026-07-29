@@ -328,40 +328,41 @@
                     </form>
                 </div>
 
-                <div class="flex -space-x-3">
-                    <img class="w-10 h-10 rounded-full border-2 border-white object-cover"
-                        src="{{ asset('images/foto1.jpg') }}" alt="Pelanggan Setia 1" />
-                    <img class="w-10 h-10 rounded-full border-2 border-white object-cover"
-                        src="{{ asset('images/foto2.jpg') }}" alt="Pelanggan Setia 2" />
-                    <img class="w-10 h-10 rounded-full border-2 border-white object-cover"
-                        src="{{ asset('images/foto3.jpg') }}" alt="Pelanggan Setia 3" />
-                </div>
-                <p class="text-body-sm text-text-secondary">Dipercaya oleh <strong>2.500+</strong> Pelanggan Setia</p>
-            </div>
-        </div>
-
-        <div class="relative hidden lg:block h-[600px] reveal">
-            <div
-                class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full flex items-center justify-center">
-                <img class="absolute inset-0 m-auto w-[78%] h-auto object-contain animate-float"
-                    data-alt="A professional high-quality photo of a modern, minimal laundry room"
-                    src="{{ asset('images/background 1 - nobg.png') }}" alt="Laundry Room" />
-
-                <div
-                    class="absolute top-10 right-0 glass-card p-md rounded-xl shadow-lg flex items-center gap-sm animate-float [animation-delay:1s]">
-                    <span class="material-symbols-outlined text-primary"
-                        style="font-variation-settings: 'FILL' 1;">check_circle</span>
-                    <span class="font-bold text-primary">Selesai 6 Jam</span>
-                </div>
-
-                <div
-                    class="absolute bottom-20 left-0 glass-card p-md rounded-xl shadow-lg flex items-center gap-sm animate-float [animation-delay:2s]">
-                    <span class="material-symbols-outlined text-secondary"
-                        style="font-variation-settings: 'FILL' 1;">eco</span>
-                    <span class="font-bold text-secondary">Eco-Detergent</span>
+                <div class="flex items-center gap-lg pt-md">
+                    <div class="flex -space-x-3">
+                        <img class="w-10 h-10 rounded-full border-2 border-white object-cover"
+                            src="{{ asset('images/foto1.jpg') }}" alt="Pelanggan Setia 1" />
+                        <img class="w-10 h-10 rounded-full border-2 border-white object-cover"
+                            src="{{ asset('images/foto2.jpg') }}" alt="Pelanggan Setia 2" />
+                        <img class="w-10 h-10 rounded-full border-2 border-white object-cover"
+                            src="{{ asset('images/foto3.jpg') }}" alt="Pelanggan Setia 3" />
+                    </div>
+                    <p class="text-body-sm text-text-secondary">Dipercaya oleh <strong>2.500+</strong> Pelanggan Setia</p>
                 </div>
             </div>
-        </div>
+
+            <div class="relative hidden lg:block h-[600px] reveal">
+                <div
+                    class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full flex items-center justify-center">
+                    <img class="absolute inset-0 m-auto w-[78%] h-auto object-contain animate-float"
+                        data-alt="A professional high-quality photo of a modern, minimal laundry room"
+                        src="{{ asset('images/background 1 - nobg.png') }}" alt="Laundry Room" />
+
+                    <div
+                        class="absolute top-10 right-0 glass-card p-md rounded-xl shadow-lg flex items-center gap-sm animate-float [animation-delay:1s]">
+                        <span class="material-symbols-outlined text-primary"
+                            style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                        <span class="font-bold text-primary">Selesai 6 Jam</span>
+                    </div>
+
+                    <div
+                        class="absolute bottom-20 left-0 glass-card p-md rounded-xl shadow-lg flex items-center gap-sm animate-float [animation-delay:2s]">
+                        <span class="material-symbols-outlined text-secondary"
+                            style="font-variation-settings: 'FILL' 1;">eco</span>
+                        <span class="font-bold text-secondary">Eco-Detergent</span>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 
