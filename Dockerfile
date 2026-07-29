@@ -34,6 +34,7 @@ RUN apk add --no-cache \
     git \
     unzip \
     zip \
+    gettext \
     icu-dev \
     oniguruma-dev \
     libzip-dev \
@@ -95,8 +96,8 @@ RUN chmod -R 777 \
     storage \
     bootstrap/cache
 
-# Nginx
-COPY docker/nginx/default.conf /etc/nginx/http.d/default.conf
+# Nginx config template (uses $PORT from Railway)
+COPY docker/nginx/default.conf /etc/nginx/http.d/default.conf.template
 
 # Supervisor
 COPY docker/supervisor/supervisord.conf /etc/supervisord.conf
@@ -104,6 +105,10 @@ COPY docker/supervisor/supervisord.conf /etc/supervisord.conf
 # PHP Opcache
 COPY docker/php/opcache.ini /usr/local/etc/php/conf.d/opcache.ini
 
+# Startup script
+COPY docker/start.sh /start.sh
+RUN chmod +x /start.sh
+
 EXPOSE 80
 
-CMD ["/usr/bin/supervisord", "-c", "/etc/supervisord.conf"]
+CMD ["/start.sh"]
