@@ -25,8 +25,9 @@ php /var/www/html/artisan config:cache
 php /var/www/html/artisan route:cache
 php /var/www/html/artisan view:cache
 
-# Run migrations
-php /var/www/html/artisan migrate --force
+# Run migrations and seed
+php /var/www/html/artisan migrate --force || { echo "Migration failed"; exit 1; }
+php /var/www/html/artisan db:seed --force --class=LayananSeeder || echo "Seeder already run or failed"
 
 # Start all processes via Supervisor
 exec /usr/bin/supervisord -c /etc/supervisord.conf
