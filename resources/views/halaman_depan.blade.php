@@ -659,7 +659,9 @@
                     <p class="text-text-primary italic mb-lg">"Layanannya juara! Pernah coba kilat 4 jam beneran kelar
                         dan wanginya awet banget."</p>
                     <div class="flex items-center gap-md">
-                        <div class="w-12 h-12 rounded-full bg-primary-fixed"></div>
+                        <img class="w-12 h-12 rounded-full border-2 border-white object-cover" 
+                             src="{{ asset('images/foto1.jpg') }}" 
+                             alt="Rian Hidayat" />
                         <div>
                             <h4 class="font-bold text-text-primary">Rian Hidayat</h4>
                             <p class="text-xs text-text-secondary">Pelanggan Setia</p>
@@ -678,7 +680,9 @@
                     <p class="text-text-primary italic mb-lg">"Fitur cek status via website bantu banget, jadi ga perlu
                         tanya-tanya terus lewat WA."</p>
                     <div class="flex items-center gap-md">
-                        <div class="w-12 h-12 rounded-full bg-secondary-fixed"></div>
+                        <img class="w-12 h-12 rounded-full border-2 border-white object-cover" 
+                             src="{{ asset('images/foto2.jpg') }}" 
+                             alt="Amalia Putri" />
                         <div>
                             <h4 class="font-bold text-text-primary">Amalia Putri</h4>
                             <p class="text-xs text-text-secondary">Wiraswasta</p>
@@ -696,7 +700,9 @@
                     <p class="text-text-primary italic mb-lg">"Kurir pickup ramah dan tepat waktu. Sangat membantu buat
                         saya yang sibuk kerja."</p>
                     <div class="flex items-center gap-md">
-                        <div class="w-12 h-12 rounded-full bg-tertiary-fixed"></div>
+                        <img class="w-12 h-12 rounded-full border-2 border-white object-cover" 
+                             src="{{ asset('images/foto3.jpg') }}" 
+                             alt="Bagas Adi" />
                         <div>
                             <h4 class="font-bold text-text-primary">Bagas Adi</h4>
                             <p class="text-xs text-text-secondary">Karyawan Swasta</p>
