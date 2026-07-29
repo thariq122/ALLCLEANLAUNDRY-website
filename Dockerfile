@@ -109,6 +109,8 @@ COPY docker/php/opcache.ini /usr/local/etc/php/conf.d/opcache.ini
 COPY docker/start.sh /start.sh
 RUN chmod +x /start.sh
 
-EXPOSE 80
+# Railway injects $PORT — expose it so Railway can detect the correct port
+# The actual port used at runtime comes from $PORT env variable
+EXPOSE 8080
 
 CMD ["/start.sh"]
