@@ -62,6 +62,8 @@ RUN composer install \
 # Copy application source
 COPY . .
 
+RUN php artisan package:discover --ansi || true
+
 # Copy built frontend assets from node-builder stage
 COPY --from=node-builder /app/public/build ./public/build
 
