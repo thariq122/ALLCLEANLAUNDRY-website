@@ -256,12 +256,11 @@
                 </p>
 
                 <div class="glass-card p-lg rounded-xl shadow-xl shadow-primary/5 max-w-md shimmer">
-                    <form class="flex flex-col md:flex-row gap-md" action="{{ url('/status') }}" method="GET">
-                        @csrf
+                    <form class="flex flex-col md:flex-row gap-md" action="{{ route('status.pelanggan') }}" method="GET">
 
                         <div class="relative flex-1">
                             <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline">receipt_long</span>
-                            <input class="w-full pl-12 pr-4 py-md rounded-xl border-border focus:ring-primary focus:border-primary transition-all" placeholder="Input nomor nota..." type="text" />
+                            <input class="w-full pl-12 pr-4 py-md rounded-xl border-border focus:ring-primary focus:border-primary transition-all" name="nota" placeholder="Input nomor nota..." type="text" value="{{ request('nota') }}" />
                         </div>
 
                         <button class="bg-primary text-white px-lg py-md rounded-xl font-bold hover:bg-primary-hover transition-all flex items-center justify-center gap-sm btn-hover-effect" type="submit">

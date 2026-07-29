@@ -7,7 +7,7 @@ use App\Http\Controllers\LaundryController;
 Route::get('/', [LaundryController::class, 'halamanDepan']);
 
 // Jalur Cek Status Pelanggan
-Route::get('/status', [LaundryController::class, 'cekStatus']);
+Route::get('/status', [LaundryController::class, 'cekStatus'])->name('status.pelanggan');
 
 // Fitur Login Area Kasir
 Route::get('/login', [LaundryController::class, 'halamanLogin'])->name('login');
