@@ -4,8 +4,7 @@
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>All Clean Laundry - Express &amp; Professional Laundry Service</title>
-<link rel="icon" type="image/png" sizes="32x32" href="{{ asset('images/favicon-32x32.png') }}">
-<link rel="shortcut icon" href="{{ asset('images/favicon-32x32.png') }}">
+<link rel="shortcut icon" href="{{ asset('images/favicon.ico') }}" type="image/x-icon">
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&amp;family=Fredoka:wght@400;500;600;700&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
 <script id="tailwind-config">
@@ -129,6 +128,19 @@
         }
         .animate-float {
             animation: float 6s ease-in-out infinite;
+        }
+        @keyframes slideFromTop {
+            0% { 
+                transform: translateY(-100px);
+                opacity: 0;
+            }
+            100% { 
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+        .animate-slide-top {
+            animation: slideFromTop 1s ease-out forwards;
         }
         .korean-label {
             background: #E0F2F1;
@@ -304,7 +316,7 @@
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-2xl items-center">
                 <div class="relative reveal">
                     <img class="rounded-xl shadow-2xl aspect-[4/3] object-cover animate-float" data-alt="A modern laundry shop storefront with a clean and professional facade" src="{{ asset('images/ruko-laundry3.png') }}" alt="Ruko laundry All Clean" />
-                    <img class="absolute -bottom-10 -right-10 w-[300px] animate-float [animation-delay:0.5s] hover:scale-110 hover:rotate-3 transition-all duration-500 cursor-pointer" src="{{ asset('images/asset2.png') }}" alt="2+ Tahun Pengalaman" />
+                    <img class="absolute -bottom-10 -right-10 w-[220px] animate-slide-top hover:scale-110 hover:rotate-3 transition-all duration-500 cursor-pointer" src="{{ asset('images/asset2.png') }}" alt="2+ Tahun Pengalaman" style="animation-delay: 0.5s;" />
                 </div>
                 <div class="space-y-lg reveal">
                     <span class="korean-label">TENTANG KAMI</span>
