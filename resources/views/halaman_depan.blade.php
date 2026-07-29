@@ -146,6 +146,35 @@
             animation: float 6s ease-in-out infinite;
         }
 
+        /* Smooth entrance animation from right */
+        @keyframes slideFromRight {
+            0% {
+                transform: translateX(50px);
+                opacity: 0;
+            }
+            100% {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        .animate-slide-right {
+            animation: slideFromRight 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        
+        /* Staggered delays */
+        .animate-delay-100 {
+            animation-delay: 0.1s;
+        }
+        .animate-delay-200 {
+            animation-delay: 0.2s;
+        }
+        .animate-delay-300 {
+            animation-delay: 0.3s;
+        }
+        .animate-delay-400 {
+            animation-delay: 0.4s;
+        }
+
         .korean-label {
             background: #E0F2F1;
             color: #006877;
@@ -294,20 +323,20 @@
         </div>
 
         <div class="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-2 gap-2xl items-center relative z-10">
-            <div class="space-y-lg reveal">
-                <span class="korean-label">SELAMAT DATANG DI ALL CLEAN LAUNDRY</span>
+            <div class="space-y-lg">
+                <span class="korean-label opacity-0 animate-slide-right">SELAMAT DATANG DI ALL CLEAN LAUNDRY</span>
 
-                <h1 class="font-h1 text-headline-xl-mobile md:text-headline-xl text-text-primary leading-[1.1]">
+                <h1 class="font-h1 text-headline-xl-mobile md:text-headline-xl text-text-primary leading-[1.1] opacity-0 animate-slide-right animate-delay-100">
                     Cek Status Cucian Anda <br />
                     <span class="text-primary-container">Secara Real-Time</span>
                 </h1>
 
-                <p class="text-text-secondary text-lg max-w-lg">
+                <p class="text-text-secondary text-lg max-w-lg opacity-0 animate-slide-right animate-delay-200">
                     Gak perlu repot bolak-balik ke outlet. Masukkan nomor nota Anda dan pantau proses laundry mulai dari
                     pencucian hingga siap diantar.
                 </p>
 
-                <div class="glass-card p-lg rounded-xl shadow-xl shadow-primary/5 max-w-md shimmer">
+                <div class="glass-card p-lg rounded-xl shadow-xl shadow-primary/5 max-w-md shimmer opacity-0 animate-slide-right animate-delay-300">
                     <form class="flex flex-col md:flex-row gap-md" action="{{ route('status.pelanggan') }}"
                         method="GET">
 
@@ -328,7 +357,7 @@
                     </form>
                 </div>
 
-                <div class="flex items-center gap-lg pt-md">
+                <div class="flex items-center gap-lg pt-md opacity-0 animate-slide-right animate-delay-400">
                     <div class="flex -space-x-3">
                         <img class="w-10 h-10 rounded-full border-2 border-white object-cover"
                             src="{{ asset('images/foto1.jpg') }}" alt="Pelanggan Setia 1" />
