@@ -282,7 +282,7 @@
 
             <div class="relative hidden lg:block h-[600px] reveal">
                 <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full flex items-center justify-center">
-                    <img class="w-[80%] h-[80%] object-cover rounded-[3rem] shadow-2xl animate-float" data-alt="A professional high-quality photo of a modern, minimal laundry room" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBgD5iVvpoR77kuRwYCR4k9558I7lrCBybYflHiqiM-FfZC8C74HRwReDSH6_zN052Cg9iCYy7229Dy9kocGZXK7tEW4g7Qignc8IE-krroRX7Mc2TRQ5LHRC92S9LTZ6hSHtyF-WrVjzHlLA8IwP7ECDVxYYiAZ4NMciblwcbLi_36Vrn3ZhEg5hlVaNB3jz5ld6kv8XAuYTMphQ1ooRZ0GljcFw2DiuW99ZdUBAVKlLcDxK-KwoyVkg"/>
+                    <img class="absolute inset-0 m-auto w-[78%] h-auto object-contain animate-float" data-alt="A professional high-quality photo of a modern, minimal laundry room" src="{{ asset('images/background 1 - nobg.png') }}" alt="Laundry Room" />
 
                     <div class="absolute top-10 right-0 glass-card p-md rounded-xl shadow-lg flex items-center gap-sm animate-float [animation-delay:1s]">
                         <span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">check_circle</span>
