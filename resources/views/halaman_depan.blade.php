@@ -129,19 +129,6 @@
         .animate-float {
             animation: float 6s ease-in-out infinite;
         }
-        @keyframes slideFromTop {
-            0% { 
-                transform: translateY(-100px);
-                opacity: 0;
-            }
-            100% { 
-                transform: translateY(0);
-                opacity: 1;
-            }
-        }
-        .animate-slide-top {
-            animation: slideFromTop 1s ease-out forwards;
-        }
         .korean-label {
             background: #E0F2F1;
             color: #006877;
@@ -316,7 +303,10 @@
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-2xl items-center">
                 <div class="relative reveal">
                     <img class="rounded-xl shadow-2xl aspect-[4/3] object-cover animate-float" data-alt="A modern laundry shop storefront with a clean and professional facade" src="{{ asset('images/ruko-laundry3.png') }}" alt="Ruko laundry All Clean" />
-                    <img class="absolute -bottom-10 -right-10 w-[220px] animate-slide-top hover:scale-110 hover:rotate-3 transition-all duration-500 cursor-pointer" src="{{ asset('images/asset2.png') }}" alt="2+ Tahun Pengalaman" style="animation-delay: 0.5s;" />
+                    <div class="absolute -bottom-10 -right-10 bg-primary text-white p-xl rounded-xl shadow-2xl text-center min-w-[200px] animate-float [animation-delay:0.5s]">
+                        <span class="block text-4xl font-bold">2+</span>
+                        <span class="text-sm opacity-90">Tahun Pengalaman</span>
+                    </div>
                 </div>
                 <div class="space-y-lg reveal">
                     <span class="korean-label">TENTANG KAMI</span>
