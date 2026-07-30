@@ -455,50 +455,55 @@
         <div class="max-w-7xl mx-auto relative reveal" id="services-carousel">
             <div class="overflow-hidden rounded-xl pb-4">
                 <div id="services-track" class="flex transition-transform duration-700 ease-in-out gap-6">
-                    @forelse(collect($daftarLayanan ?? [])->take(4) as $layanan)
-                        @php
-                            $icons = ['local_laundry_service', 'rocket_launch', 'timer', 'king_bed'];
-                            $icon = $icons[$loop->index] ?? 'local_laundry_service';
-                        @endphp
-                        <div class="w-full shrink-0 px-4">
-                            <div class="glass-card p-xl rounded-xl border border-border flex flex-col items-center text-center group hover:shadow-2xl transition-all hover:-translate-y-2 h-full shimmer">
-                                <div
-                                    class="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center text-primary mb-lg group-hover:bg-primary group-hover:text-white transition-all">
-                                    <span class="material-symbols-outlined text-3xl">{{ $icon }}</span>
-                                </div>
-                                <h3 class="font-h2 text-xl mb-sm">{{ $layanan->nama_layanan }}</h3>
-                                <p class="text-text-secondary text-sm mb-lg">
-                                    {{ $layanan->deskripsi ?? 'Layanan laundry profesional dengan proses cepat dan rapi.' }}</p>
-                                <div class="mt-auto">
-                                    <p class="text-primary font-bold text-2xl">Rp
-                                        {{ number_format((float) $layanan->harga, 0, ',', '.') }}<span
-                                            class="text-sm font-normal text-text-secondary">/{{ $layanan->jenis_satuan ?? 'Kg' }}</span>
-                                    </p>
-                                    @if(($layanan->kategori ?? '') === 'Reguler' || $loop->first)
-                                        <span class="text-xs text-secondary font-bold">⭐ Terpopuler</span>
-                                    @elseif(($layanan->kategori ?? '') === 'Khusus' || $loop->last)
-                                        <span class="text-xs text-text-secondary italic">Mulai dari</span>
-                                    @endif
-                                </div>
+                    @php
+                        $allLayanan = collect($daftarLayanan ?? []);
+                        if ($allLayanan->isEmpty()) {
+                            $allLayanan = collect(range(1, 16))->map(function($i) {
+                                return (object)[
+                                    'nama_layanan' => 'Layanan ' . $i,
+                                    'deskripsi' => 'Layanan laundry profesional pilihan ke-' . $i,
+                                    'harga' => 8000 + ($i * 500),
+                                    'jenis_satuan' => 'Kg',
+                                    'kategori' => $i === 1 ? 'Reguler' : 'Lainnya'
+                                ];
+                            });
+                        }
+                        // Chunk into groups of 4 items per slide (total 4 slides = 16 items max)
+                        $chunks = $allLayanan->take(16)->chunk(4);
+                    @endphp
+
+                    @foreach($chunks as $chunkIndex => $chunk)
+                        <div class="w-full shrink-0 px-2">
+                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-lg">
+                                @foreach($chunk as $layanan)
+                                    @php
+                                        $icons = ['local_laundry_service', 'rocket_launch', 'timer', 'king_bed'];
+                                        $icon = $icons[$loop->index % count($icons)] ?? 'local_laundry_service';
+                                    @endphp
+                                    <div class="glass-card p-xl rounded-xl border border-border flex flex-col items-center text-center group hover:shadow-2xl transition-all hover:-translate-y-2 h-full shimmer">
+                                        <div
+                                            class="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center text-primary mb-lg group-hover:bg-primary group-hover:text-white transition-all">
+                                            <span class="material-symbols-outlined text-3xl">{{ $icon }}</span>
+                                        </div>
+                                        <h3 class="font-h2 text-xl mb-sm">{{ $layanan->nama_layanan }}</h3>
+                                        <p class="text-text-secondary text-sm mb-lg">
+                                            {{ $layanan->deskripsi ?? 'Layanan laundry profesional dengan proses cepat dan rapi.' }}</p>
+                                        <div class="mt-auto">
+                                            <p class="text-primary font-bold text-2xl">Rp
+                                                {{ number_format((float) $layanan->harga, 0, ',', '.') }}<span
+                                                    class="text-sm font-normal text-text-secondary">/{{ $layanan->jenis_satuan ?? 'Kg' }}</span>
+                                            </p>
+                                            @if(($layanan->kategori ?? '') === 'Reguler' || ($chunkIndex === 0 && $loop->first))
+                                                <span class="text-xs text-secondary font-bold">⭐ Terpopuler</span>
+                                            @elseif(($layanan->kategori ?? '') === 'Khusus')
+                                                <span class="text-xs text-text-secondary italic">Mulai dari</span>
+                                            @endif
+                                        </div>
+                                    </div>
+                                @endforeach
                             </div>
                         </div>
-                    @empty
-                        <div class="w-full shrink-0 px-4">
-                            <div class="glass-card p-xl rounded-xl border border-border flex flex-col items-center text-center group hover:shadow-2xl transition-all hover:-translate-y-2 h-full shimmer">
-                                <div
-                                    class="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center text-primary mb-lg group-hover:bg-primary group-hover:text-white transition-all">
-                                    <span class="material-symbols-outlined text-3xl">local_laundry_service</span>
-                                </div>
-                                <h3 class="font-h2 text-xl mb-sm">Reguler</h3>
-                                <p class="text-text-secondary text-sm mb-lg">Cuci kering setrika rapi dalam 2-3 hari pengerjaan.</p>
-                                <div class="mt-auto">
-                                    <p class="text-primary font-bold text-2xl">Rp 8.000<span
-                                            class="text-sm font-normal text-text-secondary">/Kg</span></p>
-                                    <span class="text-xs text-secondary font-bold">⭐ Terpopuler</span>
-                                </div>
-                            </div>
-                        </div>
-                    @endforelse
+                    @endforeach
                 </div>
             </div>
             <div id="services-dots" class="flex justify-center gap-2 mt-6"></div>
@@ -951,11 +956,11 @@
             const dotsContainer = document.getElementById('services-dots');
             if (track && track.children.length > 0) {
                 let currentSlide = 0;
-                const cards = track.children;
-                const totalSlides = cards.length;
+                const slides = Array.from(track.children);
+                const totalSlides = slides.length; // 4 slides expected
 
                 function getSlidesPerView() {
-                    return 1; // Always 1 card per slide = 4 dots
+                    return 1; // Always 1 slide visible = 4 dots
                 }
 
                 function buildDots() {
@@ -976,8 +981,8 @@
                     const maxSlide = Math.max(0, Math.ceil(totalSlides / slidesPerView) - 1);
                     if (currentSlide > maxSlide) currentSlide = maxSlide;
                     const gap = 24;
-                    const cardWidth = cards[0].offsetWidth;
-                    const offset = currentSlide * (cardWidth + gap) * slidesPerView;
+                    const slideWidth = slides[0].offsetWidth;
+                    const offset = currentSlide * (slideWidth + gap) * slidesPerView;
                     track.style.transform = `translateX(-${offset}px)`;
 
                     const dots = dotsContainer?.querySelectorAll('button');
