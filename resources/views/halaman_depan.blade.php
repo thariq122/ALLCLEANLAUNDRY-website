@@ -453,22 +453,14 @@
             <h2 class="font-h2 text-headline-lg text-text-primary mt-md">Tarif Laundry Terjangkau</h2>
         </div>
         <div class="max-w-7xl mx-auto relative reveal" id="services-carousel">
-            <button onclick="slideServices(-1)"
-                class="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 z-10 w-12 h-12 rounded-full bg-white shadow-xl border border-border flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-all hidden md:flex">
-                <span class="material-symbols-outlined">chevron_left</span>
-            </button>
-            <button onclick="slideServices(1)"
-                class="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 z-10 w-12 h-12 rounded-full bg-white shadow-xl border border-border flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-all hidden md:flex">
-                <span class="material-symbols-outlined">chevron_right</span>
-            </button>
-            <div class="overflow-hidden rounded-xl">
-                <div id="services-track" class="flex transition-transform duration-500 ease-in-out gap-lg">
+            <div class="overflow-hidden rounded-xl pb-4">
+                <div id="services-track" class="flex transition-transform duration-700 ease-in-out gap-6">
                     @forelse(collect($daftarLayanan ?? []) as $layanan)
                         @php
                             $icons = ['local_laundry_service', 'rocket_launch', 'timer', 'king_bed'];
                             $icon = $icons[$loop->index] ?? 'local_laundry_service';
                         @endphp
-                        <div class="min-w-[calc(100%/1.1)] md:min-w-[calc(100%/2.2)] lg:min-w-[calc(100%/4.2)] shrink-0">
+                        <div class="w-full md:w-1/2 lg:w-1/4 shrink-0 px-2">
                             <div class="glass-card p-xl rounded-xl border border-border flex flex-col items-center text-center group hover:shadow-2xl transition-all hover:-translate-y-2 h-full shimmer">
                                 <div
                                     class="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center text-primary mb-lg group-hover:bg-primary group-hover:text-white transition-all">
@@ -491,7 +483,7 @@
                             </div>
                         </div>
                     @empty
-                        <div class="min-w-[calc(100%/1.1)] md:min-w-[calc(100%/2.2)] lg:min-w-[calc(100%/4.2)] shrink-0">
+                        <div class="w-full md:w-1/2 lg:w-1/4 shrink-0 px-2">
                             <div class="glass-card p-xl rounded-xl border border-border flex flex-col items-center text-center group hover:shadow-2xl transition-all hover:-translate-y-2 h-full shimmer">
                                 <div
                                     class="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center text-primary mb-lg group-hover:bg-primary group-hover:text-white transition-all">
@@ -509,7 +501,7 @@
                     @endforelse
                 </div>
             </div>
-            <div id="services-dots" class="flex justify-center gap-2 mt-lg md:hidden"></div>
+            <div id="services-dots" class="flex justify-center gap-2 mt-6"></div>
         </div>
     </section>
 
@@ -998,18 +990,28 @@
                     }
                 }
 
-                window.slideServices = (dir) => {
-                    const slidesPerView = getSlidesPerView();
-                    const maxSlide = Math.max(0, Math.ceil(totalSlides / slidesPerView) - 1);
-                    currentSlide = Math.max(0, Math.min(maxSlide, currentSlide + dir));
-                    updateCarousel();
-                };
-
                 let resizeTimer;
                 window.addEventListener('resize', () => {
                     clearTimeout(resizeTimer);
                     resizeTimer = setTimeout(() => { buildDots(); updateCarousel(); }, 150);
                 });
+
+                // Auto-slide
+                let autoSlideInterval;
+                const startAutoSlide = () => {
+                    autoSlideInterval = setInterval(() => {
+                        const slidesPerView = getSlidesPerView();
+                        const maxSlide = Math.max(0, Math.ceil(totalSlides / slidesPerView) - 1);
+                        currentSlide = (currentSlide >= maxSlide) ? 0 : currentSlide + 1;
+                        updateCarousel();
+                    }, 5000);
+                };
+
+                startAutoSlide();
+
+                const carousel = document.getElementById('services-carousel');
+                carousel.addEventListener('mouseenter', () => clearInterval(autoSlideInterval));
+                carousel.addEventListener('mouseleave', startAutoSlide);
 
                 buildDots();
                 updateCarousel();
