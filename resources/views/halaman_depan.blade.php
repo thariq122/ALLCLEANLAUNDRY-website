@@ -455,12 +455,12 @@
         <div class="max-w-7xl mx-auto relative reveal" id="services-carousel">
             <div class="overflow-hidden rounded-xl pb-4">
                 <div id="services-track" class="flex transition-transform duration-700 ease-in-out gap-6">
-                    @forelse(collect($daftarLayanan ?? []) as $layanan)
+                    @forelse(collect($daftarLayanan ?? [])->take(4) as $layanan)
                         @php
                             $icons = ['local_laundry_service', 'rocket_launch', 'timer', 'king_bed'];
                             $icon = $icons[$loop->index] ?? 'local_laundry_service';
                         @endphp
-                        <div class="w-full md:w-1/2 lg:w-1/4 shrink-0 px-2">
+                        <div class="w-full shrink-0 px-4">
                             <div class="glass-card p-xl rounded-xl border border-border flex flex-col items-center text-center group hover:shadow-2xl transition-all hover:-translate-y-2 h-full shimmer">
                                 <div
                                     class="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center text-primary mb-lg group-hover:bg-primary group-hover:text-white transition-all">
@@ -483,7 +483,7 @@
                             </div>
                         </div>
                     @empty
-                        <div class="w-full md:w-1/2 lg:w-1/4 shrink-0 px-2">
+                        <div class="w-full shrink-0 px-4">
                             <div class="glass-card p-xl rounded-xl border border-border flex flex-col items-center text-center group hover:shadow-2xl transition-all hover:-translate-y-2 h-full shimmer">
                                 <div
                                     class="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center text-primary mb-lg group-hover:bg-primary group-hover:text-white transition-all">
@@ -955,9 +955,7 @@
                 const totalSlides = cards.length;
 
                 function getSlidesPerView() {
-                    if (window.innerWidth >= 1024) return 4;
-                    if (window.innerWidth >= 768) return 2;
-                    return 1;
+                    return 1; // Always 1 card per slide = 4 dots
                 }
 
                 function buildDots() {
@@ -967,7 +965,7 @@
                     dotsContainer.innerHTML = '';
                     for (let i = 0; i < dotCount; i++) {
                         const dot = document.createElement('button');
-                        dot.className = 'w-3 h-3 rounded-full transition-all ' + (i === currentSlide ? 'bg-primary w-6' : 'bg-outline-variant');
+                        dot.className = 'w-3 h-3 rounded-full transition-all ' + (i === currentSlide ? 'bg-primary' : 'bg-outline-variant');
                         dot.onclick = () => { currentSlide = i; updateCarousel(); };
                         dotsContainer.appendChild(dot);
                     }
@@ -985,7 +983,7 @@
                     const dots = dotsContainer?.querySelectorAll('button');
                     if (dots) {
                         dots.forEach((d, i) => {
-                            d.className = 'w-3 h-3 rounded-full transition-all ' + (i === currentSlide ? 'bg-primary w-6' : 'bg-outline-variant');
+                            d.className = 'w-3 h-3 rounded-full transition-all ' + (i === currentSlide ? 'bg-primary' : 'bg-outline-variant');
                         });
                     }
                 }
