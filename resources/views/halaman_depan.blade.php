@@ -277,6 +277,10 @@
         .animate-subtle-pulse {
             animation: subtle-pulse 3s infinite ease-in-out;
         }
+        /* Carousel smooth snap */
+        #services-track > div {
+            scroll-snap-align: start;
+        }
     </style>
 </head>
 
@@ -448,49 +452,64 @@
             <span class="korean-label">LAYANAN & HARGA</span>
             <h2 class="font-h2 text-headline-lg text-text-primary mt-md">Tarif Laundry Terjangkau</h2>
         </div>
-        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-lg">
-            @forelse(collect($daftarLayanan ?? []) as $layanan)
-                @php
-                    $icons = ['local_laundry_service', 'rocket_launch', 'timer', 'king_bed'];
-                    $icon = $icons[$loop->index] ?? 'local_laundry_service';
-                @endphp
-                <div
-                    class="glass-card p-xl rounded-xl border border-border flex flex-col items-center text-center group hover:shadow-2xl transition-all hover:-translate-y-2 reveal shimmer">
-                    <div
-                        class="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center text-primary mb-lg group-hover:bg-primary group-hover:text-white transition-all">
-                        <span class="material-symbols-outlined text-3xl">{{ $icon }}</span>
-                    </div>
-                    <h3 class="font-h2 text-xl mb-sm">{{ $layanan->nama_layanan }}</h3>
-                    <p class="text-text-secondary text-sm mb-lg">
-                        {{ $layanan->deskripsi ?? 'Layanan laundry profesional dengan proses cepat dan rapi.' }}</p>
-                    <div class="mt-auto">
-                        <p class="text-primary font-bold text-2xl">Rp
-                            {{ number_format((float) $layanan->harga, 0, ',', '.') }}<span
-                                class="text-sm font-normal text-text-secondary">/{{ $layanan->jenis_satuan ?? 'Kg' }}</span>
-                        </p>
-                        @if(($layanan->kategori ?? '') === 'Reguler' || $loop->first)
-                            <span class="text-xs text-secondary font-bold">⭐ Terpopuler</span>
-                        @elseif(($layanan->kategori ?? '') === 'Khusus' || $loop->last)
-                            <span class="text-xs text-text-secondary italic">Mulai dari</span>
-                        @endif
-                    </div>
+        <div class="max-w-7xl mx-auto relative reveal" id="services-carousel">
+            <button onclick="slideServices(-1)"
+                class="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 z-10 w-12 h-12 rounded-full bg-white shadow-xl border border-border flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-all hidden md:flex">
+                <span class="material-symbols-outlined">chevron_left</span>
+            </button>
+            <button onclick="slideServices(1)"
+                class="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 z-10 w-12 h-12 rounded-full bg-white shadow-xl border border-border flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-all hidden md:flex">
+                <span class="material-symbols-outlined">chevron_right</span>
+            </button>
+            <div class="overflow-hidden rounded-xl">
+                <div id="services-track" class="flex transition-transform duration-500 ease-in-out gap-lg">
+                    @forelse(collect($daftarLayanan ?? []) as $layanan)
+                        @php
+                            $icons = ['local_laundry_service', 'rocket_launch', 'timer', 'king_bed'];
+                            $icon = $icons[$loop->index] ?? 'local_laundry_service';
+                        @endphp
+                        <div class="min-w-[calc(100%/1.1)] md:min-w-[calc(100%/2.2)] lg:min-w-[calc(100%/4.2)] shrink-0">
+                            <div class="glass-card p-xl rounded-xl border border-border flex flex-col items-center text-center group hover:shadow-2xl transition-all hover:-translate-y-2 h-full shimmer">
+                                <div
+                                    class="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center text-primary mb-lg group-hover:bg-primary group-hover:text-white transition-all">
+                                    <span class="material-symbols-outlined text-3xl">{{ $icon }}</span>
+                                </div>
+                                <h3 class="font-h2 text-xl mb-sm">{{ $layanan->nama_layanan }}</h3>
+                                <p class="text-text-secondary text-sm mb-lg">
+                                    {{ $layanan->deskripsi ?? 'Layanan laundry profesional dengan proses cepat dan rapi.' }}</p>
+                                <div class="mt-auto">
+                                    <p class="text-primary font-bold text-2xl">Rp
+                                        {{ number_format((float) $layanan->harga, 0, ',', '.') }}<span
+                                            class="text-sm font-normal text-text-secondary">/{{ $layanan->jenis_satuan ?? 'Kg' }}</span>
+                                    </p>
+                                    @if(($layanan->kategori ?? '') === 'Reguler' || $loop->first)
+                                        <span class="text-xs text-secondary font-bold">⭐ Terpopuler</span>
+                                    @elseif(($layanan->kategori ?? '') === 'Khusus' || $loop->last)
+                                        <span class="text-xs text-text-secondary italic">Mulai dari</span>
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+                    @empty
+                        <div class="min-w-[calc(100%/1.1)] md:min-w-[calc(100%/2.2)] lg:min-w-[calc(100%/4.2)] shrink-0">
+                            <div class="glass-card p-xl rounded-xl border border-border flex flex-col items-center text-center group hover:shadow-2xl transition-all hover:-translate-y-2 h-full shimmer">
+                                <div
+                                    class="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center text-primary mb-lg group-hover:bg-primary group-hover:text-white transition-all">
+                                    <span class="material-symbols-outlined text-3xl">local_laundry_service</span>
+                                </div>
+                                <h3 class="font-h2 text-xl mb-sm">Reguler</h3>
+                                <p class="text-text-secondary text-sm mb-lg">Cuci kering setrika rapi dalam 2-3 hari pengerjaan.</p>
+                                <div class="mt-auto">
+                                    <p class="text-primary font-bold text-2xl">Rp 8.000<span
+                                            class="text-sm font-normal text-text-secondary">/Kg</span></p>
+                                    <span class="text-xs text-secondary font-bold">⭐ Terpopuler</span>
+                                </div>
+                            </div>
+                        </div>
+                    @endforelse
                 </div>
-            @empty
-                <div
-                    class="glass-card p-xl rounded-xl border border-border flex flex-col items-center text-center group hover:shadow-2xl transition-all hover:-translate-y-2 reveal shimmer">
-                    <div
-                        class="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center text-primary mb-lg group-hover:bg-primary group-hover:text-white transition-all">
-                        <span class="material-symbols-outlined text-3xl">local_laundry_service</span>
-                    </div>
-                    <h3 class="font-h2 text-xl mb-sm">Reguler</h3>
-                    <p class="text-text-secondary text-sm mb-lg">Cuci kering setrika rapi dalam 2-3 hari pengerjaan.</p>
-                    <div class="mt-auto">
-                        <p class="text-primary font-bold text-2xl">Rp 8.000<span
-                                class="text-sm font-normal text-text-secondary">/Kg</span></p>
-                        <span class="text-xs text-secondary font-bold">⭐ Terpopuler</span>
-                    </div>
-                </div>
-            @endforelse
+            </div>
+            <div id="services-dots" class="flex justify-center gap-2 mt-lg md:hidden"></div>
         </div>
     </section>
 
@@ -934,6 +953,67 @@
             window.addEventListener('resize', updateActiveNavLink);
 
         });
+
+            // Services carousel
+            const track = document.getElementById('services-track');
+            const dotsContainer = document.getElementById('services-dots');
+            if (track && track.children.length > 0) {
+                let currentSlide = 0;
+                const cards = track.children;
+                const totalSlides = cards.length;
+
+                function getSlidesPerView() {
+                    if (window.innerWidth >= 1024) return 4;
+                    if (window.innerWidth >= 768) return 2;
+                    return 1;
+                }
+
+                function buildDots() {
+                    if (!dotsContainer) return;
+                    const slidesPerView = getSlidesPerView();
+                    const dotCount = Math.max(1, Math.ceil(totalSlides / slidesPerView));
+                    dotsContainer.innerHTML = '';
+                    for (let i = 0; i < dotCount; i++) {
+                        const dot = document.createElement('button');
+                        dot.className = 'w-3 h-3 rounded-full transition-all ' + (i === currentSlide ? 'bg-primary w-6' : 'bg-outline-variant');
+                        dot.onclick = () => { currentSlide = i; updateCarousel(); };
+                        dotsContainer.appendChild(dot);
+                    }
+                }
+
+                function updateCarousel() {
+                    const slidesPerView = getSlidesPerView();
+                    const maxSlide = Math.max(0, Math.ceil(totalSlides / slidesPerView) - 1);
+                    if (currentSlide > maxSlide) currentSlide = maxSlide;
+                    const gap = 24;
+                    const cardWidth = cards[0].offsetWidth;
+                    const offset = currentSlide * (cardWidth + gap) * slidesPerView;
+                    track.style.transform = `translateX(-${offset}px)`;
+
+                    const dots = dotsContainer?.querySelectorAll('button');
+                    if (dots) {
+                        dots.forEach((d, i) => {
+                            d.className = 'w-3 h-3 rounded-full transition-all ' + (i === currentSlide ? 'bg-primary w-6' : 'bg-outline-variant');
+                        });
+                    }
+                }
+
+                window.slideServices = (dir) => {
+                    const slidesPerView = getSlidesPerView();
+                    const maxSlide = Math.max(0, Math.ceil(totalSlides / slidesPerView) - 1);
+                    currentSlide = Math.max(0, Math.min(maxSlide, currentSlide + dir));
+                    updateCarousel();
+                };
+
+                let resizeTimer;
+                window.addEventListener('resize', () => {
+                    clearTimeout(resizeTimer);
+                    resizeTimer = setTimeout(() => { buildDots(); updateCarousel(); }, 150);
+                });
+
+                buildDots();
+                updateCarousel();
+            }
     </script>
 </body>
 
